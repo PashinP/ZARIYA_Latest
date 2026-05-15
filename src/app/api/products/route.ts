@@ -1,0 +1,66 @@
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+import { NextRequest, NextResponse } from 'next/server';
+import { saveProduct, listProducts } from '@/lib/db';
+
+let cachedProducts: any = null;
+let lastFetch = 0;
+
+export async function GET() {
+    console.time("Firestore fetch");
+    try {
+        console.log("Route hit: /api/products (GET)");
+
+        if (cachedProducts && Date.now() - lastFetch < 10000) {
+            console.log("Returning cached products");
+            console.timeEnd("Firestore fetch");
+            return NextResponse.json(cachedProducts);
+        }
+
+        const products = await listProducts();
+
+        const mappedProducts = products.map((item: any) => {
+            if (item.imageKey) {
+                return {
+                    ...item,
+                    originalImage: `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${item.imageKey}`
+                };
+            }
+            return item;
+        });
+
+        // Sort by newest first and limit to 20 items
+        mappedProducts.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        const limitedProducts = mappedProducts.slice(0, 20);
+
+        cachedProducts = limitedProducts;
+        lastFetch = Date.now();
+
+        console.timeEnd("Firestore fetch");
+        return NextResponse.json(limitedProducts);
+    } catch (error) {
+        console.error("API error:", error);
+        console.timeEnd("Firestore fetch");
+        return NextResponse.json([]);
+    }
+}
+
+export async function POST(req: NextRequest) {
+    try {
+        console.log("Route hit: /api/products (POST)");
+
+        const productData = await req.json();
+
+        if (!productData || !productData.id) {
+            return NextResponse.json({ error: 'Invalid product data' }, { status: 400 });
+        }
+
+        await saveProduct(productData);
+
+        return NextResponse.json(productData);
+    } catch (error) {
+        console.error("API error:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
+}

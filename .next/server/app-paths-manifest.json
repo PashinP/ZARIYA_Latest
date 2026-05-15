@@ -1,0 +1,11 @@
+{
+  "/api/products/route": "app/api/products/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/tts/route": "app/api/tts/route.js",
+  "/api/ai/autofill/route": "app/api/ai/autofill/route.js",
+  "/api/s3/presign/route": "app/api/s3/presign/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/artisan/profile-setup/page": "app/artisan/profile-setup/page.js",
+  "/artisan/new-product/page": "app/artisan/new-product/page.js"
+}
