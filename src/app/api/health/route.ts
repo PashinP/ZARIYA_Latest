@@ -64,7 +64,7 @@ export async function GET() {
             if (!apiKey) throw new Error("GOOGLE_GENAI_API_KEY not defined");
             const genai = new GoogleGenAI({ apiKey });
             const response = await genai.models.generateContent({
-                model: 'gemini-2.5-flash',
+                model: 'gemini-2.0-flash',
                 contents: 'Say "ok"',
                 config: { maxOutputTokens: 10 },
             });

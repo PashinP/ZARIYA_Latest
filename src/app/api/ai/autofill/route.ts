@@ -112,7 +112,7 @@ Strictly follow this schema:
         const base64Image = resizedBuffer.toString('base64');
 
         const response = await getGeminiClient().models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.0-flash',
             contents: [
                 {
                     role: 'user',

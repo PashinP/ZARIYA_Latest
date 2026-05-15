@@ -46,7 +46,7 @@ Format as JSON with keys: "craft_story" (string), "short_description" (string)`;
     try {
       console.log("Calling GCP service: Gemini (Generate Story)");
       const response = await getGeminiClient().models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.0-flash',
         contents: prompt,
       });
 
