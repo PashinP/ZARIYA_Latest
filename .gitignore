@@ -1,2 +1,13 @@
 node_modules/
-node_modules/
+.next/
+.env.local
+.env*.local
+*.mp3
+out.txt
+errors.txt
+ts_errors.log
+typescript-check.txt
+error.json
+error2.json
+.DS_Store
+deploy.sh
