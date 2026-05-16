@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         }));
 
         const response = await getGeminiClient().models.generateContent({
-            model: 'gemini-2.0-flash',
+            model: 'gemini-2.5-flash',
             contents: geminiContents,
             config: {
                 systemInstruction: systemText,
